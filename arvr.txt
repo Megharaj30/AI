@@ -1,0 +1,267 @@
+//DAY_NIGHT
+using UnityEngine;
+
+public class SkyboxSwitcher : MonoBehaviour
+{
+    public Material daySkybox;
+    public Material nightSkybox;
+
+    private bool isDay = true;
+
+    void Start()
+    {
+        // Set initial skybox
+        RenderSettings.skybox = daySkybox;
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) // Left mouse click
+        {
+            SwitchSkybox();
+        }
+    }
+
+    void SwitchSkybox()
+    {
+        isDay = !isDay;
+        RenderSettings.skybox = isDay ? daySkybox : nightSkybox;
+
+        // Optional: Update ambient lighting to match the skybox
+        DynamicGI.UpdateEnvironment();
+    }
+}
+
+//Bouncing ball
+using UnityEngine;
+
+public class BouncingBall : MonoBehaviour
+{
+    public float initialForce = 10f;    // Initial upward force
+    public float stopAfterSeconds = 5f; // Time after which damping starts
+    public float dampingFactor = 0.98f; // Rate of bounce reduction
+
+    private Rigidbody rb;
+    private float timer;
+    private bool shouldDamp = false;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        Bounce();
+    }
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (timer >= stopAfterSeconds)
+        {
+            shouldDamp = true;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (shouldDamp)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * dampingFactor, rb.velocity.z);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!shouldDamp && collision.contacts[0].normal.y > 0.5f)
+        {
+            Bounce();
+        }
+    }
+
+    void Bounce()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, initialForce, rb.velocity.z);
+    }
+}
+
+//collision-player
+using UnityEngine;
+
+public class PlayerCollision : MonoBehaviour
+{
+    // Called when the player character collides with something
+    void OnCollisionEnter(Collision collision)
+    {
+        // Example: Check if the player collides with an object tagged as "Obstacle"
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Player collided with an obstacle!");
+            // Add reaction to collision, e.g., stop movement, damage, etc.
+        }
+
+        // Example: Check if the player is on the ground
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            Debug.Log("Player is on the ground.");
+            // Player can jump or do other actions
+        }
+    }
+}
+
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    public float moveSpeed = 5f;
+
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        // Get player input for movement
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        // Calculate movement vector
+        Vector3 movement = new Vector3(horizontal, 0, vertical) * moveSpeed * Time.deltaTime;
+
+        // Apply movement to Rigidbody
+        rb.MovePosition(transform.position + movement);
+    }
+}
+
+//Input-2D
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerController : MonoBehaviour
+{
+    public float moveSpeed = 5f;
+    private Vector2 moveInput;
+    private Rigidbody2D rb;
+    private PlayerControls controls;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        controls = new PlayerControls();
+
+        controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity = moveInput * moveSpeed;
+    }
+}
+
+//kicking a ball in Unity (at 3 various speeds).”
+
+You'll simulate:
+
+A ball in a 3D scene
+
+Three different kick speeds
+
+User clicking a button or pressing a key to kick the ball at a chosen speed
+
+🧱 STEP 1: Scene Setup
+Create a 3D Scene in Unity.
+
+Add:
+
+Plane → as ground
+
+Hierarchy → Right-click → 3D Object → Plane → Rename to Ground
+
+Sphere → as ball
+
+Hierarchy → 3D Object → Sphere → Rename to Ball
+
+Position it slightly above ground (e.g., Y = 0.5)
+
+Add a RigidBody component to the ball:
+
+Select Ball → Inspector → Add Component → Rigidbody
+
+Add a wall or cube at a distance so you can see how far the ball travels.
+
+🎯 STEP 2: Create the Kick Script
+Create a C# script → name it BallKicker.cs
+
+Attach it to the Ball
+
+✅ Script Code:
+csharp
+Copy
+Edit
+using UnityEngine;
+
+public class BallKicker : MonoBehaviour
+{
+    private Rigidbody rb;
+
+    public float lowSpeed = 5f;
+    public float mediumSpeed = 10f;
+    public float highSpeed = 20f;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) // Press 1
+        {
+            KickBall(lowSpeed);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) // Press 2
+        {
+            KickBall(mediumSpeed);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) // Press 3
+        {
+            KickBall(highSpeed);
+        }
+    }
+
+    void KickBall(float force)
+    {
+        rb.velocity = Vector3.zero; // reset previous motion
+        rb.angularVelocity = Vector3.zero;
+        rb.AddForce(transform.forward * force, ForceMode.Impulse);
+    }
+}
+🧩 STEP 3: Align the Ball
+Rotate the Ball (or scene) so that transform.forward points toward the direction you want to kick (Z-axis by default).
+
+Optionally, add a visible target or goal in that direction.
+
+🧪 STEP 4: Testing the Scene
+Press Play
+
+Press:
+
+1 → Low-speed kick
+
+2 → Medium-speed kick
+
+3 → High-speed kick
+
+Observe the difference in how far and fast the ball moves.
