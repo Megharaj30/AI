@@ -1,0 +1,159 @@
+Here's a structured breakdown of the practicals you're required to implement, along with the details for **algorithm used**, **heuristic nature**, **application**, and **time & space complexity**.
+
+---
+
+## **Group A**
+
+---
+
+### **1. DFS and BFS on Undirected Graph**
+
+#### ✅ Algorithm Used:
+
+* **DFS**: Depth First Search (recursive)
+* **BFS**: Breadth First Search (queue-based)
+
+#### 🎯 Heuristic:
+
+* ❌ Not heuristic
+
+#### 💡 Application:
+
+* Network traversal, path finding in graphs, connectivity checks
+
+#### ⏱️ Time & Space Complexity:
+
+| Traversal | Time Complexity | Space Complexity |
+| --------- | --------------- | ---------------- |
+| DFS       | O(V + E)        | O(V)             |
+| BFS       | O(V + E)        | O(V)             |
+
+---
+
+### **2. A* Algorithm*\*
+
+#### ✅ Algorithm Used:
+
+* A\* Search (uses `f(n) = g(n) + h(n)`)
+
+#### 🎯 Heuristic:
+
+* ✅ Yes (uses admissible heuristic function `h(n)`)
+
+#### 💡 Application:
+
+* Game pathfinding (e.g., grid-based maze solver, robot pathing)
+
+#### ⏱️ Time & Space Complexity:
+
+* **Time**: O(E), depends on heuristic quality
+* **Space**: O(V)
+
+---
+
+### **3. Greedy Algorithms**
+
+#### ✅ Algorithm Used:
+
+* **Selection Sort**: Greedy selection of minimum
+* **Prim's Algorithm**: Greedy MST using edge weights
+* **Kruskal's Algorithm**: Greedy MST using edge sorting + union-find
+
+#### 🎯 Heuristic:
+
+* ❌ Not heuristic (purely greedy)
+
+#### 💡 Application:
+
+| Algorithm      | Application                           |
+| -------------- | ------------------------------------- |
+| Selection Sort | Sorting simple lists                  |
+| Prim’s         | Designing network connections         |
+| Kruskal’s      | Road/railway design with minimum cost |
+
+#### ⏱️ Time & Space Complexity:
+
+| Algorithm      | Time Complexity | Space Complexity |
+| -------------- | --------------- | ---------------- |
+| Selection Sort | O(n²)           | O(1)             |
+| Prim’s (heap)  | O(E log V)      | O(V)             |
+| Kruskal’s      | O(E log E)      | O(E + V)         |
+
+---
+
+## **Group B**
+
+---
+
+### **4. CSP using Backtracking / Branch & Bound**
+
+> (Choose **N-Queens** or **Graph Coloring**)
+
+#### ✅ Algorithm Used:
+
+* **Backtracking** with pruning (Branch & Bound in optimization)
+
+#### 🎯 Heuristic:
+
+* ❌ Not necessarily heuristic (pure constraint satisfaction)
+
+#### 💡 Application:
+
+* Puzzles, scheduling, map coloring, placement problems
+
+#### ⏱️ Time & Space Complexity:
+
+| Problem        | Time Complexity           | Space Complexity |
+| -------------- | ------------------------- | ---------------- |
+| N-Queens       | O(N!) (worst case)        | O(N²)            |
+| Graph Coloring | O(mⁿ) (m colors, n nodes) | O(N)             |
+
+---
+
+### **5. Elementary Chatbot**
+
+#### ✅ Algorithm Used:
+
+* Rule-based pattern matching or decision tree
+
+#### 🎯 Heuristic:
+
+* ❌ Not heuristic (simple keyword or regex based)
+
+#### 💡 Application:
+
+* Customer service, website interaction bot
+
+#### ⏱️ Time & Space Complexity:
+
+* **Time**: O(n), where n = number of rules
+* **Space**: O(n)
+
+---
+
+## **Group C**
+
+---
+
+### **6. Expert System: Hospital and Medical Facilities**
+
+#### ✅ Algorithm Used:
+
+* Rule-based inference system (Forward/Backward chaining)
+
+#### 🎯 Heuristic:
+
+* ✅ Can be heuristic if inference uses expert scores
+
+#### 💡 Application:
+
+* Medical diagnosis, treatment recommendation
+
+#### ⏱️ Time & Space Complexity:
+
+* **Time**: O(R), where R = number of rules
+* **Space**: O(R + F), R = rules, F = facts
+
+---
+
+Would you like me to provide **code templates** for each of these practicals as well?
